@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DlvarejoApplication {
+public class DLvarejoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DlvarejoApplication.class, args);
+		SpringApplication.run(DLvarejoApplication.class, args);
 	}
 
 }
