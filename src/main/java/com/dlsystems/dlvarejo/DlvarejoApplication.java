@@ -13,6 +13,7 @@ import com.dlsystems.dlvarejo.domain.Cidade;
 import com.dlsystems.dlvarejo.domain.Cliente;
 import com.dlsystems.dlvarejo.domain.Endereco;
 import com.dlsystems.dlvarejo.domain.Estado;
+import com.dlsystems.dlvarejo.domain.ItemPedido;
 import com.dlsystems.dlvarejo.domain.Pagamento;
 import com.dlsystems.dlvarejo.domain.PagamentoComBoleto;
 import com.dlsystems.dlvarejo.domain.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.dlsystems.dlvarejo.repositories.CidadeRepository;
 import com.dlsystems.dlvarejo.repositories.ClienteRepository;
 import com.dlsystems.dlvarejo.repositories.EnderecoRepository;
 import com.dlsystems.dlvarejo.repositories.EstadoRepository;
+import com.dlsystems.dlvarejo.repositories.ItemPedidoRepository;
 import com.dlsystems.dlvarejo.repositories.PagamentoRepository;
 import com.dlsystems.dlvarejo.repositories.PedidoRepository;
 import com.dlsystems.dlvarejo.repositories.ProdutoRepository;
@@ -50,6 +52,8 @@ public class DLvarejoApplication implements CommandLineRunner {
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itempedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(DLvarejoApplication.class, args);
@@ -114,6 +118,19 @@ public class DLvarejoApplication implements CommandLineRunner {
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itempedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 
 }
