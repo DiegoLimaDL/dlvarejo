@@ -1,7 +1,11 @@
 package com.dlsystems.dlvarejo;
 
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.TimeZone;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -36,6 +40,15 @@ import com.dlsystems.dlvarejo.repositories.ProdutoRepository;
 @SpringBootApplication
 public class DLvarejoApplication implements CommandLineRunner {
 
+	/*
+	Este método abaixo PostConstruct realiza a troca de fuso-horário do Java
+	para que ele gere o XML corretamente com os horários corretos.
+	*/
+	@PostConstruct
+	void started(){
+	  TimeZone.setDefault(TimeZone.getTimeZone("TimeZone"));
+	}
+	
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
@@ -92,7 +105,7 @@ public class DLvarejoApplication implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
-		Cliente cli1 = new Cliente(null, "Carlos Albero", "c.a@gmail.com", "03045678989", TipoCliente.PESSOAFISICA);
+		Cliente cli1 = new Cliente(null, "Carlos Alberto", "c.a@gmail.com", "03045678989", TipoCliente.PESSOAFISICA);
 		cli1.getTelefones().addAll(Arrays.asList("40068989", "40069898"));
 		
 		Endereco e1 = new Endereco(null, "Rua flores", "360", "Apto 303", "Jardim das Américas", "30022053", cli1, c1);
@@ -103,21 +116,22 @@ public class DLvarejoApplication implements CommandLineRunner {
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy HH:mm");
 		
 		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
 		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
 		
-		Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
-		ped1.setPagamento(pgto1);
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
 		
-		Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
-		ped2.setPagamento(pgto2);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped2.setPagamento(pagto2);
 		
 		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
-		pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 		
 		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
 		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
