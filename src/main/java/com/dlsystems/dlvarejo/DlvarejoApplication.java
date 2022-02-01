@@ -38,7 +38,7 @@ import com.dlsystems.dlvarejo.repositories.ProdutoRepository;
 
 
 @SpringBootApplication
-public class DLvarejoApplication implements CommandLineRunner {
+public class DlvarejoApplication implements CommandLineRunner {
 
 	/*
 	Este método abaixo PostConstruct realiza a troca de fuso-horário do Java
@@ -69,7 +69,7 @@ public class DLvarejoApplication implements CommandLineRunner {
 	private ItemPedidoRepository itempedidoRepository;
 	
 	public static void main(String[] args) {
-		SpringApplication.run(DLvarejoApplication.class, args);
+		SpringApplication.run(DlvarejoApplication.class, args);
 	}
 
 	@Override
